@@ -3,6 +3,8 @@ ansible-role-smartd
 
 installs and configures smartd
 
+If it recognizes a DELL disk
+
 Requirements
 ------------
 
@@ -10,6 +12,7 @@ Requirements
 Role Variables
 --------------
 
+see defaults/main.yml
 
 Dependencies
 ------------
