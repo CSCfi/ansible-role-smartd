@@ -3,7 +3,7 @@
 
 # everything that smartctl --scan outputs
 
-- name: populate smartd file with these devices
+- name: Generic - populate smartd file with these devices
   lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
   with_items: smart_list_of_devices.stdout_lines
 #  when: "'/dev/sda' not in item"

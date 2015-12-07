@@ -5,7 +5,7 @@
 # smartctl --scan outputs this, which one can't add to smartd.conf:
 # /dev/sda -d scsi # /dev/sda, SCSI device
 
-- name: populate smartd file with these devices
+- name: DELL - populate smartd file with these devices
   lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
   with_items: smart_list_of_devices.stdout_lines
   when: "'/dev/sda' not in item"

@@ -10,13 +10,16 @@
 
 - debug: var=smart_list_of_devices
 
+- name: template in almost empty smartd.conf
+  template: src=smartd.conf.j2 dest={{ smartd_config_file }}
+
+## Populate smartd.conf
 - include: dell.yml
   when: ansible_devices.sda.vendor == "DELL"
 
 - include: generic.yml
   when: ansible_devices.sda.vendor != "DELL"
-
-# Comment out devicescan line
+##
 
 - name: enable smartd service
   service: name=smartd enabled=yes
