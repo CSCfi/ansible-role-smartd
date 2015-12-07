@@ -11,7 +11,7 @@
 - debug: var=smart_list_of_devices
 
 - name: template in almost empty smartd.conf
-  template: src=smartd.conf.j2 dest={{ smartd_config_file }}
+  template: src=smartd.conf.j2 dest={{ smartd_config_file }} backup=yes mode=0644
 
 ## Populate smartd.conf
 - include: dell.yml
