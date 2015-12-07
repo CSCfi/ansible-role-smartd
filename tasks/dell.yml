@@ -8,8 +8,8 @@
 # With smartmontools 6.4 one can just use the standard DEVICESCAN line
 # With smartmontools 6.2 we do this instead >
 
-- name: template in almost empty smartd.conf
-  template: src=smartd.conf.j2 dest={{ smartd_config_file }} backup=yes mode=0644
+- name: move the default smartd.conf
+  command: mv -v {{ smartd_config_file }} {{ smartd_config_file }}.bkp creates={{ smartd_config_file }}.bkp
 
 - name: grab list of devices
   command: "smartctl --scan"
@@ -19,7 +19,7 @@
 - debug: var=item.split('#').0
   with_items: smart_list_of_devices.stdout_lines
 
-- name: DELL - populate smartd file with these devices
-  lineinfile: dest={{ smartd_config_file }} regexp='{{ item.split('#').0 }} {{smartd_device_arguments }}$' line="{{ item.split('#').0 }} {{ smartd_device_arguments }}" state=present
+- name: DELL - populate smartd file with these devices except /dev/sda
+  lineinfile: dest={{ smartd_config_file }} regexp='{{ item.split('#').0 }}{{ smartd_device_arguments }}$' line="{{ item.split('#').0 }}{{ smartd_device_arguments }}" state=present create=yes
   with_items: smart_list_of_devices.stdout_lines
   when: "'/dev/sda' not in item"
