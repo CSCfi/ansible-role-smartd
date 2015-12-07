@@ -19,6 +19,6 @@
 - debug: var=smart_list_of_devices
 
 - name: DELL - populate smartd file with these devices
-  lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
-  with_items: smart_list_of_devices.stdout_lines
+  lineinfile: dest={{ smartd_config_file }} regexp='{{ item[0] }}$' line="{{ item[0] }}" state=present
+  with_items: smart_list_of_devices.stdout_lines.split('#')
   when: "'/dev/sda' not in item"
