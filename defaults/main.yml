@@ -3,3 +3,4 @@
 
 # If True - configure smartd service and start it
 smartd_service: True
+smartd_config_file: "/etc/smartmontools/smartd.conf"
