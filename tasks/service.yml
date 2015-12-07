@@ -12,6 +12,7 @@
 - name: grab list of devices
   command: "smartctl --scan"
   register: smart_list_of_devices
+  always_run: True
 
 - debug: var=smart_list_of_devices
 
@@ -23,4 +24,3 @@
 
 - name: enable smartd service
   service: name=smartd enabled=yes
-  when: smart|success
