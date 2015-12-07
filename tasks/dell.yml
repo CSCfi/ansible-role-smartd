@@ -5,6 +5,19 @@
 # smartctl --scan outputs this, which one can't add to smartd.conf:
 # /dev/sda -d scsi # /dev/sda, SCSI device
 
+# With smartmontools 6.4 one can just use the standard DEVICESCAN line
+# With smartmontools 6.2 we do this instead >
+
+- name: template in almost empty smartd.conf
+  template: src=smartd.conf.j2 dest={{ smartd_config_file }} backup=yes mode=0644
+
+- name: grab list of devices
+  command: "smartctl --scan"
+  register: smart_list_of_devices
+  always_run: True
+
+- debug: var=smart_list_of_devices
+
 - name: DELL - populate smartd file with these devices
   lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
   with_items: smart_list_of_devices.stdout_lines
