@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-role-smartd
+
+# If True - configure smartd service and start it
+smartd_service: True

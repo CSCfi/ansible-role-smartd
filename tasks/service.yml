@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-role-smartd
+
+#         "ansible_system_vendor": "Dell Inc.",
+#         "ansible_devices": {
+#            "sda": {
+#                "vendor": "DELL"
+
+
+- debug: var=ansible_devices
+
+- name: grab list of devices
+  command: "smartctl --scan"
+  register: smart_list_of_devices
+
+- debug: var=smart_list_of_devices
+
+- name: populate smartd file with these devices
+  lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
+  with_items: smart_list_of_devices.stdout_lines
+
+# Comment out devicescan line
+
+- name: enable smartd service
+  service: name=smartd enabled=yes
+  when: smart|success

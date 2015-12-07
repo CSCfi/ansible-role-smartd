@@ -1,0 +1,8 @@
+---
+# tasks file for ansible-role-smartd
+
+- name: Installed
+  action: >
+    {{ ansible_pkg_mgr }}
+    name="smartmontools"
+    state=installed
