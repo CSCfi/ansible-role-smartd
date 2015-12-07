@@ -18,7 +18,7 @@
 - name: populate smartd file with these devices
   lineinfile: dest={{ smartd_config_file }} regexp='{{ item }}$' line="{{ item }}" state=present
   with_items: smart_list_of_devices.stdout_lines
-  when: '"/dev/sda" not in item' and ansible_devices.sda.vendor == "DELL"
+  when: "'/dev/sda' not in item" and ansible_devices.sda.vendor == "DELL"
 
 # Comment out devicescan line
 
