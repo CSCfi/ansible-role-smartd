@@ -3,7 +3,9 @@ ansible-role-smartd
 
 installs and configures smartd
 
-If it recognizes a DELL disk
+If it recognizes a DELL disk, then take all the disks found with smartctl --scan except /dev/sda and put them in a clean smartd.conf.
+
+Else: just use the default DEVICESCAN line.
 
 Requirements
 ------------
