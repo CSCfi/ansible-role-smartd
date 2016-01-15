@@ -2,6 +2,7 @@
 # tasks file for ansible-role-smartd
 
  - include: install.yml
+   when: ansible_virtualization_role != "guest"
 
  - include: service.yml
-   when: smartd_service
+   when: smartd_service and ansible_virtualization_role != "guest"
