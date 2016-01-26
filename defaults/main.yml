@@ -7,3 +7,4 @@ smartd_config_file: "/etc/smartmontools/smartd.conf"
 smartd_monitor_all_found_disks: False
 smartd_device_arguments: "-a -m root"
 smartd_service_enabled: "yes"
+smartd_service_state: "started"

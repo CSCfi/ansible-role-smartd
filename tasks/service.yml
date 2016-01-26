@@ -15,4 +15,4 @@
 ##
 
 - name: enable smartd service
-  service: name=smartd enabled={{ smartd_service_enabled }}
+  service: name=smartd enabled={{ smartd_service_enabled }} state={{ smartd_service_state }}
