@@ -12,7 +12,7 @@
   command: mv -v {{ smartd_config_file }} {{ smartd_config_file }}.bkp creates={{ smartd_config_file }}.bkp
 
 - name: grab list of devices
-  command: "smartctl --scan"
+  command: "/usr/sbin/smartctl --scan"
   register: smart_list_of_devices
   always_run: True
 
