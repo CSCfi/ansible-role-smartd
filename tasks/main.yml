@@ -16,6 +16,7 @@
   command: "/usr/sbin/smartctl --scan"
   register: smart_list_of_devices
   always_run: True
+  changed_when: False
   when: smartd_service
 
 ## Populate smartd.conf
