@@ -2,7 +2,7 @@
 # tasks file for ansible-role-smartd
 
 - include: install.yml
-  when: ansible_virtualization_role != "guest"
+  when: smartd_service and ansible_virtualization_role != "guest"
 
 # If DELL = do some workaround
 # If smartd_monitor_all_found_disks is True - add all from smartctl --scan
@@ -28,4 +28,4 @@
 
 - name: enable smartd service
   service: name=smartd enabled={{ smartd_service_enabled }} state={{ smartd_service_state }}
-  when: smartd_service
+  when: smartd_service and ansible_virtualization_role != "guest"
