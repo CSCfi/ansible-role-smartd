@@ -5,10 +5,16 @@
 # If smartd_monitor_all_found_disks is False - use the smartd.conf from the package and its DEVICESCAN
 
 - debug: var=ansible_devices.sda.vendor
+  when: ansible_devices.sda is defined
+
+- name: grab list of devices by running smartctl --scan
+  command: "/usr/sbin/smartctl --scan"
+  register: smart_list_of_devices
+  always_run: True
 
 ## Populate smartd.conf
 - include: dell.yml
-  when: ansible_devices.sda.vendor == "DELL"
+  when: ansible_devices.sda is defined and ansible_devices.sda.vendor == "DELL"
 
 - include: generic.yml
   when: smartd_monitor_all_found_disks

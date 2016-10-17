@@ -11,11 +11,6 @@
 - name: move the default smartd.conf
   command: mv -v {{ smartd_config_file }} {{ smartd_config_file }}.bkp creates={{ smartd_config_file }}.bkp
 
-- name: grab list of devices
-  command: "/usr/sbin/smartctl --scan"
-  register: smart_list_of_devices
-  always_run: True
-
 - debug: var=item.split('#').0
   with_items: "{{ smart_list_of_devices.stdout_lines }}"
 
