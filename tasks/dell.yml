@@ -16,11 +16,11 @@
   with_items: "{{ smart_list_of_devices.stdout_lines | default({})}}"
 
 - name: DELL - populate smartd file with these devices except /dev/sda
-  lineinfile: 
+  lineinfile:
     dest: "{{ smartd_config_file }}"
-    regexp: '{{ item.split('#').0 }}{{ smartd_device_arguments }}$' 
-    line: "{{ item.split('#').0 }}{{ smartd_device_arguments }}" 
-    state: present 
+    regexp: "{{ item.split('#').0 }}{{ smartd_device_arguments }}$"
+    line: "{{ item.split('#').0 }}{{ smartd_device_arguments }}"
+    state: present
     create: yes
   with_items: "{{ smart_list_of_devices.stdout_lines | default({}) }}"
   when: "'/dev/sd' not in item"
