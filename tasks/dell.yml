@@ -11,12 +11,18 @@
 - name: move the default smartd.conf
   command: mv -v {{ smartd_config_file }} {{ smartd_config_file }}.bkp creates={{ smartd_config_file }}.bkp
 
-- debug: var=item.split('#').0 verbosity=1
-  with_items: "{{ smart_list_of_devices.stdout_lines }}"
+- name: print smart_list_of_devices if it is defined
+  debug: var=item.split('#').0 verbosity=1
+  with_items: "{{ smart_list_of_devices.stdout_lines | default({})}}"
 
 - name: DELL - populate smartd file with these devices except /dev/sda
-  lineinfile: dest={{ smartd_config_file }} regexp='{{ item.split('#').0 }}{{ smartd_device_arguments }}$' line="{{ item.split('#').0 }}{{ smartd_device_arguments }}" state=present create=yes
-  with_items: "{{ smart_list_of_devices.stdout_lines }}"
+  lineinfile: 
+    dest: "{{ smartd_config_file }}"
+    regexp: '{{ item.split('#').0 }}{{ smartd_device_arguments }}$' 
+    line: "{{ item.split('#').0 }}{{ smartd_device_arguments }}" 
+    state: present 
+    create: yes
+  with_items: "{{ smart_list_of_devices.stdout_lines | default({}) }}"
   when: "'/dev/sd' not in item"
   notify:
     - restart smartd
