@@ -15,7 +15,7 @@
 - name: grab list of devices by running smartctl --scan
   command: "/usr/sbin/smartctl --scan"
   register: smart_list_of_devices
-  always_run: True
+  check_mode: no
   changed_when: False
   when: smartd_service
 
