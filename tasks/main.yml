@@ -17,7 +17,7 @@
   register: smart_list_of_devices
   check_mode: no
   changed_when: False
-  when: smartd_service
+  when: smartd_service and ansible_connection != 'chroot'
 
 ## Populate smartd.conf
 - include_tasks: dell.yml
@@ -29,4 +29,14 @@
 
 - name: enable smartd service
   service: name=smartd enabled={{ smartd_service_enabled }} state={{ smartd_service_state }}
-  when: smartd_service and ansible_virtualization_role != "guest"
+  when:
+    - smartd_service
+    - ansible_virtualization_role != "guest"
+    - ansible_connection != 'chroot'
+
+- name: enable smartd service in chroot
+  command: systemctl enable smartd
+  when:
+    - smartd_service
+    - smartd_service_enabled == 'yes'
+    - ansible_connection == 'chroot'

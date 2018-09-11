@@ -3,3 +3,4 @@
 
  - name: restart smartd
    service: name=smartd state=restarted
+   when: ansible_connection != 'chroot'
