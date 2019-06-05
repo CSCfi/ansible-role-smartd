@@ -2,7 +2,7 @@
 # tasks file for ansible-role-smartd
 
 - include_tasks: install.yml
-  when: (smartd_service and ansible_virtualization_role != "guest") or (ansible_virtualization_type == "docker")
+  when: (smartd_service|bool and ansible_virtualization_role != "guest") or (ansible_virtualization_type == "docker")
 
 # If DELL = do some workaround
 # If smartd_monitor_all_found_disks is True - add all from smartctl --scan
@@ -17,26 +17,26 @@
   register: smart_list_of_devices
   check_mode: no
   changed_when: False
-  when: smartd_service and ansible_connection != 'chroot'
+  when: smartd_service|bool and ansible_connection != 'chroot'
 
 ## Populate smartd.conf
 - include_tasks: dell.yml
   when: ansible_devices.sda is defined and ansible_devices.sda.vendor == "DELL" and smartd_service and ansible_virtualization_role != "guest"
 
 - include_tasks: generic.yml
-  when: smartd_monitor_all_found_disks and smartd_service and ansible_virtualization_role != "guest"
+  when: smartd_monitor_all_found_disks|bool and smartd_service|bool and ansible_virtualization_role != "guest"
 ##
 
 - name: enable smartd service
   service: name=smartd enabled={{ smartd_service_enabled }} state={{ smartd_service_state }}
   when:
-    - smartd_service
+    - smartd_service|bool
     - ansible_virtualization_role != "guest"
     - ansible_connection != 'chroot'
 
 - name: enable smartd service in chroot
   command: systemctl enable smartd
   when:
-    - smartd_service
+    - smartd_service|bool
     - smartd_service_enabled == 'yes'
     - ansible_connection == 'chroot'
