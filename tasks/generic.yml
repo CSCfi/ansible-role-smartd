@@ -4,7 +4,7 @@
 # everything that smartctl --scan outputs
 
 - name: Generic - populate smartd file with these devices
-  lineinfile: 
+  lineinfile:
     dest: "{{ smartd_config_file }}"
     regexp: '{{ item }}$'
     line: "{{ item }}"

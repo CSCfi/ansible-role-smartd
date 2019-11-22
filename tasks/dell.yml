@@ -13,7 +13,7 @@
 
 - name: print smart_list_of_devices if it is defined
   debug: var=item.split('#').0 verbosity=1
-  with_items: "{{ smart_list_of_devices.stdout_lines | default({})}}"
+  with_items: "{{ smart_list_of_devices.stdout_lines | default({}) }}"
 
 - name: DELL - populate smartd file with these devices except /dev/sda
   lineinfile:

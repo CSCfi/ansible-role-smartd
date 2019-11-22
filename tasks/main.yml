@@ -9,7 +9,9 @@
 # If smartd_monitor_all_found_disks is False - use the smartd.conf from the package and its DEVICESCAN
 
 - name: debug print ansible_devices.sda.vendor if verbosity is one or higher
-  debug: var=ansible_devices.sda.vendor verbosity=1
+  debug:
+    var: ansible_devices.sda.vendor
+    verbosity: 1
   when: ansible_devices.sda is defined
 
 - name: grab list of devices by running smartctl --scan
@@ -21,10 +23,17 @@
 
 ## Populate smartd.conf
 - include_tasks: dell.yml
-  when: ansible_devices.sda is defined and ansible_devices.sda.vendor == "DELL" and smartd_service and ansible_virtualization_role != "guest"
+  when:
+    - ansible_devices.sda is defined
+    - ansible_devices.sda.vendor == "DELL"
+    - smartd_service
+    - ansible_virtualization_role != "guest"
 
 - include_tasks: generic.yml
-  when: smartd_monitor_all_found_disks|bool and smartd_service|bool and ansible_virtualization_role != "guest"
+  when:
+    - smartd_monitor_all_found_disks|bool
+    - smartd_service|bool
+    - ansible_virtualization_role != "guest"
 ##
 
 - name: enable smartd service
